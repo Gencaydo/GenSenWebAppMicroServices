@@ -1,6 +1,6 @@
-﻿using ECommerce.Shared.Dtos;
-using ECommerceServices.Catalog.Dtos;
+﻿using ECommerceServices.Catalog.Dtos;
 using ECommerceServices.Catalog.Models;
+using Venhancer.Shared.Dtos;
 
 namespace ECommerceServices.Catalog.Services
 {

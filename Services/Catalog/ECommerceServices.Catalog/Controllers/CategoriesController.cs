@@ -1,8 +1,5 @@
-﻿using ECommerce.Shared.Dtos;
-using ECommerceServices.Catalog.Dtos;
-using ECommerceServices.Catalog.Models;
+﻿using ECommerceServices.Catalog.Dtos;
 using ECommerceServices.Catalog.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceServices.Catalog.Controllers

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using ECommerce.Shared.Dtos;
 using ECommerceServices.Catalog.AppSettings;
 using ECommerceServices.Catalog.Dtos;
 using ECommerceServices.Catalog.Models;
 using MongoDB.Driver;
+using Venhancer.Shared.Dtos;
 
 namespace ECommerceServices.Catalog.Services
 {
