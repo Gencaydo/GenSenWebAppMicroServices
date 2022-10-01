@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Venhancer.IdentityServer.Dtos;
+using Venhancer.IdentityServer.Mapping;
 using Venhancer.IdentityServer.Models;
 using Venhancer.Shared.Dtos;
 using static IdentityServer4.IdentityServerConstants;
@@ -26,7 +27,7 @@ namespace Venhancer.IdentityServer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignUp([FromBody] SignUpDto signUpDto)
+        public async Task<Response<UserDto>> SignUp([FromBody] SignUpDto signUpDto)
         {
             var user = new ApplicationUser
             {
@@ -36,21 +37,22 @@ namespace Venhancer.IdentityServer.Controllers
 
             var result = await _userManager.CreateAsync(user, signUpDto.Password);
 
-            if (!result.Succeeded) return BadRequest(Response<NoContent>.Fail(new ErrorDto { Errors = result.Errors.Select(x => x.Description).ToList() }, 400));
+            if (!result.Succeeded) return Response<UserDto>.Fail(new ErrorDto { Errors = result.Errors.Select(x => x.Description).ToList() }, 400);
 
-            return Ok(Response<NoContent>.Success(200));
+            return Response<UserDto>.Success(ObjectMapper.Mapper.Map<UserDto>(user), 200);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUser()
+        public async Task<Response<UserDto>> SignIn()
         {
             var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
-            if (userIdClaim == null) return BadRequest();
+            if (userIdClaim == null) return Response<UserDto>.Fail(new ErrorDto("UserName or Password Wrong!", true), 404);
+
 
             var user = await _userManager.FindByIdAsync(userIdClaim.Value);
-            if (user == null) return BadRequest();
+            if (user == null) return Response<UserDto>.Fail(new ErrorDto("UserName or Password Wrong!", true), 404);
 
-            return Ok(new {Id = user.Id,UserName = user.UserName,Email = user.Email});
+            return Response<UserDto>.Success(ObjectMapper.Mapper.Map<UserDto>(user), 200);
         }
     }
 }
